@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TwitterLite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/customcss.css" rel="stylesheet" media="screen">
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<div class="container-narrow">
+
+		<div class="well jumbotron">
+			<!-- <p class="lead">Payment Processing Form</h2> -->
+			<p class="lead">twitterLite</p>
+				<body onload="loadTable()">
+		</div>
+	</div>
+ 
+<script>
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+			results = regex.exec(location.search);
+		return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+	
+	function loadTable() {
+		
+			var type = getParameterByName('type');
+			console.log(type);
+			
+			var requestUrl;
+			if (type == 'user') {
+				var username = getParameterByName('username');
+				requestUrl = "http://localhost:8080/twitter/messages/user/?username="+username+"&offset=0&limit=50";
+			} else if (type == 'tag') {
+				var tag = getParameterByName('tag');
+				requestUrl = "http://localhost:8080/twitter/messages/hashtags/?hashlist="+tag+"&offset=0&limit=50";
+			}
+			
+			$.getJSON(requestUrl, function(data){
+		
+			hashtag_regexp = /#([a-zA-Z0-9]+)/g;
+			mention_regexp = /@([a-zA-Z0-9]+)/g;
+			var tableData = '<table><tr><td>Name</td><td>Content</td></tr>';
+			$.each(data, function (index, value) {
+				console.log(value.content);
+				var twitterOut = value.content;
+				var replacedTags = twitterOut.replace(
+						hashtag_regexp,
+						'<a class="hashtag" href="http://localhost:8080/twitUI/lookup.html?type=tag&tag=$1">#$1</a>'
+					);
+				var replacedMentions = replacedTags.replace(mention_regexp, '<a style="color: #CC0000" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username=$1">@$1</a>');
+				tableData += '<tr><td>'+value.username+'</td><td>'+replacedMentions+'</td></tr>';
+			}
+		)
+		
+		$('div').html(tableData);
+		});
+	}
+	
+</script>
+</body>
+</html>
+

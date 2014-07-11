@@ -54,7 +54,10 @@
 						'<a class="hashtag" href="http://localhost:8080/twitUI/lookup.html?type=tag&tag=$1">#$1</a>'
 					);
 				var replacedMentions = replacedTags.replace(mention_regexp, '<a style="color: #CC0000" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username=$1">@$1</a>');
-				tableData += '<tr><td>'+value.username+'</td><td>'+replacedMentions+'</td></tr>';
+				
+				var linkedUser = value.username.replace(value.username, '<a style="color: #CC0000" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username='+value.username+'">value.username</a>');
+				
+				tableData += '<tr><td>'+linkedUser+'</td><td>'+replacedMentions+'</td></tr>';
 			}
 		)
 		

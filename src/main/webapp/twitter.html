@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TwitterLite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/customcss.css" rel="stylesheet" media="screen">
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<head>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<div class="container-narrow">
+
+		<div class="well jumbotron">
+			<!-- <p class="lead">Payment Processing Form</h2> -->
+			<p class="lead">twitterLite</p>
+			<form id="tweetAction" title="" method="post">
+				<div>
+					<label class="title">Username</label>
+					<input type="text" id="name" name="name" >
+				</div>
+				<div>
+					<label class="title">Tweet</label>
+					<input type="text" id="tweet" name="tweet" >
+				</div>
+				<div>
+					<input type="submit" id="submitButton"  name="submitButton" value="Submit">
+				</div>
+		</div>
+	</div>
+ </form>
+ 
+<script type='text/javascript'>
+    /* attach a submit handler to the form */
+    $("#tweetAction").submit(function(event) {
+
+      /* stop form from submitting normally */
+      event.preventDefault();
+
+      /* get some values from elements on the page: */
+      var $form = $( this ),
+          url = $form.attr( 'action' );
+
+      /* Send the data using post */
+      var posting = $.post( url, { name: $('#name').val(), tweet: $('#tweet').val() } );
+
+      /* Put the results in a div */
+      posting.done(function( data ) {
+       alert('success');
+      });
+    });
+</script>
+
+</body>
+</html>
+

@@ -15,24 +15,18 @@
 		<div class="well jumbotron">
 			<!-- <p class="lead">Payment Processing Form</h2> -->
 			<p class="lead">twitterLite</p>
-				<div>
-					<label class="title">Username</label>
-					<input type="text" id="name" name="name" >
-				</div>
-				<div>
-					<label class="title">Tweet</label>
-					<input type="text" id="tweet" name="tweet" >
-				</div>
-				<input type="button" value="Submit" id="tweet" onclick="formSubmit()">
+				<input type="button" value="Retrieve" id="tweet" onclick="formSubmit()">
 		</div>
 	</div>
  
 <script>
 	function formSubmit(){
 			
-			var username = document.getElementById("name").value;
-			var tweet = document.getElementById("tweet").value;
-			$.post("http://localhost:8080/twitter/tweets/", {"username" : username, "message" : tweet});
+	$.getJSON("http://localhost:8080/twitter/messages/?offset=0&limit=5", function(data){
+		$.each(data, function (index, value) {
+			console.log(value);
+    });
+});
 	}
 </script>
 </body>

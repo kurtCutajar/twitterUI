@@ -22,12 +22,27 @@
 <script>
 	function formSubmit(){
 			
-	$.getJSON("http://localhost:8080/twitter/messages/?offset=0&limit=5", function(data){
+
+	$.getJSON("http://localhost:8080/twitter/messages/?offset=0&limit=50", function(data){
+	
+		hashtag_regexp = /#([a-zA-Z0-9]+)/g;
+		mention_regexp = /@([a-zA-Z0-9]+)/g;
+		var tableData = '<table><tr><td>Name</td><td>Content</td></tr>';
 		$.each(data, function (index, value) {
-			console.log(value);
-    });
-});
-	}
+			var twitterOut = value.content;
+			var replacedTags = twitterOut.replace(
+					hashtag_regexp,
+					'<a class="hashtag" href="http://twitter.com/#search?q=$1">#$1</a>'
+				);
+			var replacedMentions = replacedTags.replace(mention_regexp, '<a style="color: #CC0000" class="mention" href="http://twitter.com/#search?q=$1">@$1</a>');
+			tableData += '<tr><td>'+value.username+'</td><td>'+replacedMentions+'</td></tr>';
+		}
+    )
+	
+	$('div').html(tableData);
+	});
+}
+	
 </script>
 </body>
 </html>

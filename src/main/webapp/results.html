@@ -52,7 +52,7 @@
 		
 			hashtag_regexp = /#([a-zA-Z0-9]+)/g;
 			mention_regexp = /@([a-zA-Z0-9]+)/g;
-			var tableData = '<table class="table table-hover"><thead><tr><th>User</th><th>Content</th></tr></thead><tbody>';
+			var tableData = '<table class="table table-hover"><thead><tr><th>User</th><th>Content</th><th>Date</th></tr></thead><tbody>';
 			$.each(data, function (index, value) {
 				console.log(value.content);
 				var twitterOut = value.content;
@@ -62,7 +62,11 @@
 					);
 				var replacedMentions = replacedTags.replace(mention_regexp, '<a style="color: #CC0000" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username=$1">@$1</a>');
 				var linkedUsername = '<a style="color: #585858" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username='+value.username+'">'+value.username+'</a>';
-				tableData += '<tr><td>'+linkedUsername+'</td><td>'+replacedMentions+'</td></tr>';
+								
+				var date = new Date(value.timestamp);
+				var formattedDate = date.toLocaleString();
+				
+				tableData += '<tr><td>'+linkedUsername+'</td><td>'+replacedMentions+'</td><td>'+formattedDate+'</td></tr>';
 			}
 	    )
 		tableData += '</tbody></table>';
@@ -73,7 +77,7 @@
 
 	function doSearch(){
 		var searchTerm = document.getElementById("search").value;
-		window.location.replace('http://localhost:8080/twitUI/lookup.html?type=tag&tag='+searchTerm);
+		window.location.href = 'http://localhost:8080/twitUI/lookup.html?type=tag&tag='+searchTerm;
 	}
 	
 </script>

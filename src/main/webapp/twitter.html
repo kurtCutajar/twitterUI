@@ -84,10 +84,10 @@
 <script>
 	function formSubmit(){
 			
-			var username = document.getElementById("name").value;
-			var tweet = document.getElementById("tweet").value;
-			$.post("http://localhost:8080/twitter/tweets/", {"username" : username, "message" : tweet});
-			window.location.replace("http://localhost:8080/twitUI/results.html");
+		var username = document.getElementById("name").value;
+		var tweet = document.getElementById("tweet").value;
+		$.post("http://localhost:8080/twitter/tweets/", {"username" : username, "message" : tweet});
+		window.location.href = "http://localhost:8080/twitUI/results.html";
 	}
 
 	function doSearch(){

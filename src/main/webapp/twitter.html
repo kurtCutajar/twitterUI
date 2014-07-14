@@ -10,22 +10,76 @@
 <script src="js/bootstrap.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="#">twitterLite</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li class="active"><a href="http://localhost:8080/twitUI/twitter.html"><i class="icon-home icon-white"></i> Home</a></li>
+          <li><a href="http://localhost:8080/twitUI/results.html">Feed</a></li>
+        </ul>
+        <form class="navbar-search pull-right" onsubmit="doSearch()">
+          <input type="text" class="search-query span2" id="search" placeholder="Search">
+        </form>
+      </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+  </div><!-- /.navbar-inner -->
+</div><!-- /.navbar -->
+
 <div class="container-narrow">
 
-		<div class="well jumbotron">
-			<!-- <p class="lead">Payment Processing Form</h2> -->
-			<p class="lead">twitterLite</p>
-				<div>
-					<label class="title">Username</label>
-					<input type="text" id="name" name="name" >
+	<div class="jumbtron">
+		
+		<!-- Article main content -->
+		<article class="col-xs-12 maincontent">
+			<header class="page-header">
+				<h1 class="page-title"></h1>
+			</header>
+			
+			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h3 class="thin text-center">Post Tweet</h3>
+						<p class="text-center text-muted">Let everyone know what you're up to!</p>
+						<hr>
+						
+						<form>
+							<div class="top-margin">
+								<label>Username <span class="text-danger">*</span></label>
+								<input type="text" class="form-control" id="name" name="name">
+							</div>
+							<div class="top-margin">
+								<label>Message <span class="text-danger">*</span></label>
+								<input class="input-xxlarge" type="text" class="form-control" id="tweet" name="tweet">
+							</div>
+
+							<hr>
+
+							<div class="row">
+								<div class="col-lg-1">
+								</div>
+								<div class="col-lg-4 text-center">
+									<button class="btn btn-action" type="button" onclick="formSubmit()">Post</button>
+								</div>
+							</div>
+						</form>
+					</div>
 				</div>
-				<div>
-					<label class="title">Tweet</label>
-					<input type="text" id="tweet" name="tweet" >
-				</div>
-				<input type="button" value="Submit" id="tweet" onclick="formSubmit()">
-		</div>
+
+			</div>
+			
+		</article>
+		<!-- /Article -->
+
 	</div>
+</div>
  
 <script>
 	function formSubmit(){
@@ -33,6 +87,12 @@
 			var username = document.getElementById("name").value;
 			var tweet = document.getElementById("tweet").value;
 			$.post("http://localhost:8080/twitter/tweets/", {"username" : username, "message" : tweet});
+			window.location.replace("http://localhost:8080/twitUI/results.html");
+	}
+
+	function doSearch(){
+		var searchTerm = document.getElementById("search").value;
+		window.location.replace('http://localhost:8080/twitUI/lookup.html?type=tag&tag='+searchTerm);
 	}
 </script>
 </body>

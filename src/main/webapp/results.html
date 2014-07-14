@@ -10,39 +10,71 @@
 <script src="js/bootstrap.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="#">twitterLite</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li><a href="http://localhost:8080/twitUI/twitter.html"><i class="icon-home icon-white"></i> Home</a></li>
+          <li class="active"><a href="http://localhost:8080/twitUI/results.html">Feed</a></li>
+        </ul>
+        <form class="navbar-search pull-right" onsubmit="doSearch()">
+          <input type="text" class="search-query span2" id="search" placeholder="Search">
+        </form>
+      </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+  </div><!-- /.navbar-inner -->
+</div><!-- /.navbar -->
+
+
 <div class="container-narrow">
 
 		<div class="well jumbotron">
-			<!-- <p class="lead">Payment Processing Form</h2> -->
-			<p class="lead">twitterLite</p>
-				<input type="button" value="Retrieve" id="tweet" onclick="formSubmit()">
+			<p class="lead">Message Feed</p>
+				<body onload="formSubmit()">
+				<div id ="content">        
+				</div>
 		</div>
 	</div>
  
 <script>
-	function formSubmit(){
-			
+	function formSubmit(){			
 
-	$.getJSON("http://localhost:8080/twitter/messages/?offset=0&limit=50", function(data){
-	
-		hashtag_regexp = /#([a-zA-Z0-9]+)/g;
-		mention_regexp = /@([a-zA-Z0-9]+)/g;
-		var tableData = '<table><tr><td>Name</td><td>Content</td></tr>';
-		$.each(data, function (index, value) {
-			console.log(value.content);
-			var twitterOut = value.content;
-			var replacedTags = twitterOut.replace(
-					hashtag_regexp,
-					'<a class="hashtag" href="http://localhost:8080/twitUI/lookup.html?type=tag&tag=$1">#$1</a>'
-				);
-			var replacedMentions = replacedTags.replace(mention_regexp, '<a style="color: #CC0000" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username=$1">@$1</a>');
-			tableData += '<tr><td>'+value.username+'</td><td>'+replacedMentions+'</td></tr>';
-		}
-    )
-	
-	$('div').html(tableData);
-	});
-}
+		$.getJSON("http://localhost:8080/twitter/messages/?offset=0&limit=50", function(data){
+		
+			hashtag_regexp = /#([a-zA-Z0-9]+)/g;
+			mention_regexp = /@([a-zA-Z0-9]+)/g;
+			var tableData = '<table class="table table-hover"><thead><tr><th>User</th><th>Content</th></tr></thead><tbody>';
+			$.each(data, function (index, value) {
+				console.log(value.content);
+				var twitterOut = value.content;
+				var replacedTags = twitterOut.replace(
+						hashtag_regexp,
+						'<a class="hashtag" href="http://localhost:8080/twitUI/lookup.html?type=tag&tag=$1">#$1</a>'
+					);
+				var replacedMentions = replacedTags.replace(mention_regexp, '<a style="color: #CC0000" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username=$1">@$1</a>');
+				var linkedUsername = '<a style="color: #585858" class="mention" href="http://localhost:8080/twitUI/lookup.html?type=user&username='+value.username+'">'+value.username+'</a>';
+				tableData += '<tr><td>'+linkedUsername+'</td><td>'+replacedMentions+'</td></tr>';
+			}
+	    )
+		tableData += '</tbody></table>';
+		
+		$("#content").html(tableData);
+		});
+	}
+
+	function doSearch(){
+		var searchTerm = document.getElementById("search").value;
+		window.location.replace('http://localhost:8080/twitUI/lookup.html?type=tag&tag='+searchTerm);
+	}
 	
 </script>
 </body>

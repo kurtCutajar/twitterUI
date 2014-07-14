@@ -50,14 +50,14 @@
 						<p class="text-center text-muted">Let everyone know what you're up to!</p>
 						<hr>
 						
-						<form>
+						<form id='myForm'>
 							<div class="top-margin">
 								<label>Username <span class="text-danger">*</span></label>
-								<input type="text" class="form-control" id="name" name="name">
+								<input type="text" class="form-control" id="name" name="name" pattern="[A-Za-z0-9]*" required='true'>
 							</div>
 							<div class="top-margin">
 								<label>Message <span class="text-danger">*</span></label>
-								<input class="input-xxlarge" type="text" class="form-control" id="tweet" name="tweet">
+								<input class="input-xxlarge" type="text" class="form-control" id="tweet" name="tweet" required>
 							</div>
 
 							<hr>
@@ -66,7 +66,7 @@
 								<div class="col-lg-1">
 								</div>
 								<div class="col-lg-4 text-center">
-									<button class="btn btn-action" type="button" onclick="formSubmit()">Post</button>
+									<button class="btn btn-action" type="submit">Post</button>
 								</div>
 							</div>
 						</form>
@@ -82,6 +82,17 @@
 </div>
  
 <script>
+	$( document ).ready(function() {
+	  $('#myForm').submit(function(e){
+		e.preventDefault();
+		var form = this;
+		var username = document.getElementById("name").value;
+		var tweet = document.getElementById("tweet").value;
+		$.post("http://localhost:8080/twitter/tweets/", {"username" : username, "message" : tweet});
+		window.location.href = "http://localhost:8080/twitUI/results.html";	  
+	  });
+	});
+	
 	function formSubmit(){
 			
 		var username = document.getElementById("name").value;
